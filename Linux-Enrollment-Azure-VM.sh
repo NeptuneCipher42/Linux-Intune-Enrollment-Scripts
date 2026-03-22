@@ -34,3 +34,4 @@ sudo apt-get update
 sudo apt install -y intune-portal
 
 sudo reboot
+#Sign into Edge first with proper domain then sign into the intune portal app to finish installation
