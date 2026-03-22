@@ -16,14 +16,6 @@ sudo adduser xrdp ssl-cert
 # --- XRDP session fix: force Ubuntu GNOME session so dock/taskbar appears ---
 # 1) Start GNOME session for XRDP
 echo "gnome-session" > "$HOME/.xsession"
-
-# 2) Force Ubuntu session env vars so you get ubuntu:GNOME (dock, appearance settings, etc.)
-cat > "$HOME/.xsessionrc" <<'EOF'
-export GNOME_SHELL_SESSION_MODE=ubuntu
-export XDG_CURRENT_DESKTOP=ubuntu:GNOME
-export XDG_CONFIG_DIRS=/etc/xdg/xdg-ubuntu:/etc/xdg
-EOF
-
 sudo systemctl restart xrdp
 
 # Microsoft Edge
