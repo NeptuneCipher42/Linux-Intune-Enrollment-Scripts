@@ -1,6 +1,4 @@
 #!/bin/bash
-set -euo pipefail
-
 # ===== Ensure GNOME is installed and active =====
 if [ "${XDG_CURRENT_DESKTOP:-}" != "GNOME" ] && [ "${XDG_CURRENT_DESKTOP:-}" != "ubuntu:GNOME" ]; then
     echo "GNOME not detected. Installing and configuring GNOME + XRDP..."
@@ -33,6 +31,8 @@ fi
 sudo apt update
 sudo apt install -y curl gpg ca-certificates
 
+sudo reboot
+#Run After reboot
 # ===== Microsoft Edge (Stable) =====
 # Use keyring + signed-by (cleaner than /etc/apt/trusted.gpg.d)
 curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor -o /usr/share/keyrings/microsoft.gpg
@@ -49,4 +49,5 @@ sudo apt install -y intune-portal
 # ===== Reboot =====
 echo "Rebooting system..."
 sudo reboot
-``
+
+#Sign into Edge first with proper domain then sign into the intune portal app to finish installation
