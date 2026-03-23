@@ -1,19 +1,28 @@
 #!/bin/bash
-# Azure VM Ubuntu 22.04 - Intune Enrollment Prep
+#################################################################################################
+# Author: Nicholas Fisher
+# Date: March 23rd 2025
+# Description of Script
+# This Bash script prepares an Azure VM running Ubuntu 22.04 for Microsoft Intune enrollment.
+# It performs a full system update, installs a minimal GNOME desktop environment with XRDP
+# for remote access, configures the XRDP session to load the Ubuntu GNOME desktop with the
+# dock and taskbar, installs Microsoft Edge and the Intune Portal app, then reboots the machine.
+# After reboot, sign into Edge with your domain account first, then open the Intune Portal app
+# to complete enrollment.
+#################################################################################################
 
-# Full update
+# Perform a full system update and upgrade
 sudo apt-get update && apt-get full-upgrade -y
 
-#Install and enable GNOME
-# Install GNOME + Flashback session
+# Install GNOME minimal desktop, Flashback session, XRDP, and required display/session dependencies
 sudo apt-get install -y ubuntu-desktop-minimal gnome-session-flashback metacity xrdp xorgxrdp dbus-x11
 
-# Enable XRDP
+# Enable and start XRDP service, then add xrdp user to ssl-cert group for certificate access
 sudo systemctl enable --now xrdp
 sudo adduser xrdp ssl-cert
 
-# If Task Bar doesn't load in Ubuntu Desktop LTS 22.04/24.04 Run the Following and Comment out the Enable XRDP Section:
-# Note: Forcing Taskbar causes Azure cat > "$HOME/.xsessionrc" <<"EOF"
+# If the taskbar does not load in Ubuntu Desktop LTS 22.04/24.04, run the following block and comment out the XRDP session fix below
+# Note: Forcing the session via .xsessionrc can cause issues on Azure VMs - use only if taskbar is missing after trying the fix below
 # cat > "$HOME/.xsessionrc" << "EOF"
 # export XAUTHORITY=${HOME}/.Xauthority
 # export GNOME_SHELL_SESSION_MODE=ubuntu
@@ -21,19 +30,18 @@ sudo adduser xrdp ssl-cert
 # export XDG_CONFIG_DIRS=/etc/xdg/xdg-ubuntu:/etc/xdg
 # EOF
 
-# --- XRDP session fix: force Ubuntu GNOME session so dock/taskbar appears ---
-# 1) Start GNOME session for XRDP
+# XRDP session fix: force Ubuntu GNOME session so the dock and taskbar load correctly over RDP
 echo "gnome-session" > "$HOME/.xsession"
 sudo systemctl restart xrdp
 
-# Microsoft Edge
+# Add Microsoft GPG key and repository, then install Microsoft Edge stable
 sudo curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
 sudo install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
 sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge-dev.list'
 sudo rm microsoft.gpg
 sudo apt update && sudo apt install microsoft-edge-stable
 
-# Intune Portal
+# Add Microsoft GPG key and Intune repository, then install the Intune Portal app
 sudo curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
 sudo install -o root -g root -m 644 microsoft.gpg /usr/share/keyrings/
 rm microsoft.gpg
@@ -41,5 +49,6 @@ sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft.gpg] h
 sudo apt-get update
 sudo apt install -y intune-portal
 
+# Reboot to apply all changes before enrollment
+# After reboot: sign into Edge with your domain account first, then open the Intune Portal app to complete enrollment
 sudo reboot
-#Sign into Edge first with proper domain then sign into the intune portal app to finish installation
