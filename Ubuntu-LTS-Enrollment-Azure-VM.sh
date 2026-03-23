@@ -12,6 +12,14 @@ sudo apt-get install -y ubuntu-desktop-minimal gnome-session-flashback metacity 
 sudo systemctl enable --now xrdp
 sudo adduser xrdp ssl-cert
 
+# If Task Bar doesn't load in Ubuntu Desktop LTS 22.04/24.04 Run the Following and Comment out the Enable XRDP Section:
+# Note: Forcing Taskbar causes Azure cat > "$HOME/.xsessionrc" <<"EOF"
+# cat > "$HOME/.xsessionrc" << "EOF"
+# export XAUTHORITY=${HOME}/.Xauthority
+# export GNOME_SHELL_SESSION_MODE=ubuntu
+# export XDG_CURRENT_DESKTOP=ubuntu:GNOME
+# export XDG_CONFIG_DIRS=/etc/xdg/xdg-ubuntu:/etc/xdg
+# EOF
 
 # --- XRDP session fix: force Ubuntu GNOME session so dock/taskbar appears ---
 # 1) Start GNOME session for XRDP
