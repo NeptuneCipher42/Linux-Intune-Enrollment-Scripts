@@ -14,11 +14,11 @@ if [ "${XDG_CURRENT_DESKTOP:-}" != "GNOME" ] && [ "${XDG_CURRENT_DESKTOP:-}" != 
 
     # 2) Force Ubuntu session env vars so you get ubuntu:GNOME (dock, appearance settings, etc.)
     cat > "$HOME/.xsessionrc" <<'EOF'
-export XAUTHORITY=${HOME}/.Xauthority
-export GNOME_SHELL_SESSION_MODE=ubuntu
-export XDG_CURRENT_DESKTOP=ubuntu:GNOME
-export XDG_CONFIG_DIRS=/etc/xdg/xdg-ubuntu:/etc/xdg
-EOF
+    export XAUTHORITY=${HOME}/.Xauthority
+    export GNOME_SHELL_SESSION_MODE=ubuntu
+    export XDG_CURRENT_DESKTOP=ubuntu:GNOME
+    export XDG_CONFIG_DIRS=/etc/xdg/xdg-ubuntu:/etc/xdg
+    EOF
 
     sudo systemctl restart xrdp
 
