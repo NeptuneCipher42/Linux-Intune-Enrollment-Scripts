@@ -1,5 +1,5 @@
 <div align="center">
-<pre>
+</pre>
 ```
 ██╗     ██╗███╗   ██╗██╗   ██╗██╗  ██╗    ██╗███╗   ██╗████████╗██╗   ██╗███╗   ██╗███████╗
 ██║     ██║████╗  ██║██║   ██║╚██╗██╔╝    ██║████╗  ██║╚══██╔══╝██║   ██║████╗  ██║██╔════╝
@@ -23,7 +23,6 @@
 ╚══════╝ ╚═════╝╚═╝  ╚═╝╚═╝╚═╝        ╚═╝   ╚══════╝
 ```
 </pre>
-</div>
 ### Automated Bash scripts for enrolling Linux machines into Microsoft Intune
 
 ![Shell Script](https://img.shields.io/badge/Shell_Script-121011?style=for-the-badge&logo=gnu-bash&logoColor=white)
