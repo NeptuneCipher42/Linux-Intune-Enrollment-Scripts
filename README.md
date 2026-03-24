@@ -112,22 +112,43 @@ A collection of Bash scripts that fully automate the setup process for enrolling
 
 <br>
 
-**Target:** Red Hat — Azure Virtual Machine
+**Target:** RHEL 8/9 running as an Azure Virtual Machine
 
-> 🚧 **Work in progress** — description and script coming soon.
+**What it does:**
+- Checks if GNOME is already the active desktop — installs it if not
+- Installs GNOME desktop environment and XRDP for remote desktop access
+- Configures the XRDP session so the GNOME desktop loads correctly over RDP
+- Installs prerequisite packages (`curl`, `ca-certificates`, `gnupg2`)
+- Adds official Microsoft repositories using signed GPG keys
+- Installs **Microsoft Edge** (stable) and the **Intune Portal** app
+- Reboots to finalize before enrollment
 
+**After reboot:** Sign into Edge with your domain account first, then open the Intune Portal app to complete enrollment.
+
+🔗 [View Script](https://github.com/NeptuneCipher42/Linux-Intune-Enrollment-Scripts/blob/main/RedHat-Enrollment-Azure-VM.sh)
 </details>
 
 ---
 
 <details>
+
 <summary><b>🔴 RedHat-Physical-Desktop-Enrollment.sh — Physical Desktop</b></summary>
 
 <br>
 
-**Target:** Red Hat — Physical Desktop
+**Target:** RHEL 8/9 running on a physical desktop machine
 
-> 🚧 **Work in progress** — description and script coming soon.
+**What it does:**
+- Checks if GNOME is already the active desktop — installs it if not
+- Installs GNOME desktop environment and sets it as the default graphical target
+- Installs prerequisite packages (`curl`, `ca-certificates`, `gnupg2`)
+- Adds official Microsoft repositories using signed GPG keys
+- Installs **Microsoft Edge** (stable) and the **Intune Portal** app
+- Reboots to finalize before enrollment
+
+**After reboot:** Sign into Edge with your domain account first, then open the Intune Portal app to complete enrollment.
+
+🔗 [View Script](https://github.com/NeptuneCipher42/Linux-Intune-Enrollment-Scripts/blob/main/RedHat-Physical-Desktop-Enrollment.sh)
 
 </details>
 
