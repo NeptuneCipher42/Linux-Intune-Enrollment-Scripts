@@ -54,6 +54,8 @@
 
 A collection of Bash scripts that fully automate the setup process for enrolling Linux machines into **Microsoft Intune**. Each script is purpose-built for a specific distro and deployment type, handling everything from desktop environment installation and XRDP configuration to Microsoft package repository setup and Intune Portal installation — with a single run.
 
+**Important Note: Please run the Microsoft Edge App and complete edge setup prior to running the Intune App for Registration. Otherwise you will incur error: 4ulu5**
+
 ---
 
 ## Scripts
