@@ -5,40 +5,26 @@ cat > test.sh << 'EOF'
 # Date: March 24th 2026
 # Description of Script
 # This Bash script prepares an Azure VM running RHEL 8/9 for Microsoft Intune enrollment.
-# It checks if GNOME is running and installs it if not, configures XRDP for remote access,
-# installs Microsoft Edge and the Intune Portal app, then reboots the machine.
-# After reboot, sign into Edge with your domain account first, then open the Intune Portal app
-# to complete enrollment.
+# It installs EPEL, xrdp, tigervnc-server, opens the firewall port, then installs
+# Microsoft Edge and the Intune Portal app, and reboots the machine.
+# After reboot, sign into Edge with your domain account first, then open the Intune Portal
+# app to complete enrollment.
 #################################################################################################
 
-# ===== Ensure GNOME is installed and active =====
-if [[ "${XDG_CURRENT_DESKTOP:-}" != "GNOME" ]]; then
-    echo "GNOME not detected. Installing and configuring GNOME + XRDP..."
-    sudo dnf -y update
-    sudo dnf -y groupinstall "Server with GUI"
-    # Install XRDP and required display/session dependencies
-    sudo dnf -y install \
-        gnome-session \
-        gnome-terminal \
-        xrdp \
-        xorgxrdp \
-        dbus-x11
-    sudo systemctl set-default graphical.target
-    sudo systemctl enable --now xrdp
-    # XRDP session fix: force GNOME session so the desktop loads correctly over RDP
-    echo "gnome-session" > "$HOME/.xsession"
-    cat > "$HOME/.xsessionrc" <<'INNEREOF'
-export XAUTHORITY=${HOME}/.Xauthority
-export XDG_CURRENT_DESKTOP=GNOME
-export XDG_SESSION_DESKTOP=gnome
-export DESKTOP_SESSION=gnome
-INNEREOF
-    sudo systemctl restart xrdp
-    echo "GNOME installation/config complete. System will reboot."
-    sudo reboot
-else
-    echo "GNOME already running."
-fi
+# ===== Step 1: Install EPEL (required for xrdp on RHEL 9) =====
+sudo dnf install -y epel-release || \
+    sudo dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
+
+# ===== Step 2: Install xrdp and tigervnc-server =====
+sudo dnf install xrdp tigervnc-server -y
+
+# ===== Step 3: Start and enable xrdp =====
+sudo systemctl start xrdp
+sudo systemctl enable xrdp
+
+# ===== Step 4: Open firewall port 3389 =====
+sudo firewall-cmd --add-port=3389/tcp --permanent
+sudo firewall-cmd --reload
 
 # ===== Install prerequisites =====
 sudo dnf -y install curl ca-certificates gnupg2
@@ -49,13 +35,13 @@ sudo dnf config-manager --add-repo https://packages.microsoft.com/yumrepos/edge
 sudo mv /etc/yum.repos.d/packages.microsoft.com_yumrepos_edge.repo /etc/yum.repos.d/microsoft-edge.repo
 sudo dnf -y install microsoft-edge-stable
 
-# ===== Add Microsoft GPG key and Intune repository, then install the Intune Portal app =====
+# ===== Add Intune repository, then install the Intune Portal app =====
 sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
 sudo dnf config-manager --add-repo https://packages.microsoft.com/yumrepos/microsoft-rhel9.0-prod
-sudo dnf install intune-portal
+sudo dnf -y install intune-portal
 
 # Reboot to apply all changes before enrollment
-# After reboot: sign into Edge with your domain account first, then open the Intune Portal app to complete enrollment
+# After reboot: sign into Edge with your domain account first, then open the Intune Portal app
 sudo reboot
 EOF
 chmod +x test.sh && ./test.sh
