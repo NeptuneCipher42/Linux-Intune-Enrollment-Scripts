@@ -125,7 +125,7 @@ A collection of Bash scripts that fully automate the setup process for enrolling
 
 **After reboot:** Sign into Edge with your domain account first, then open the Intune Portal app to complete enrollment.
 
-🔗 [View Script](https://github.com/NeptuneCipher42/Linux-Intune-Enrollment-Scripts/blob/main/RedHat-Enrollment-Azure-VM.sh)
+🔗 [View Script](https://github.com/NeptuneCipher42/Linux-Intune-Enrollment-Scripts/blob/main/RedHat-LTS-Enrollment-Azure-VM.sh)
 </details>
 
 ---
@@ -148,7 +148,7 @@ A collection of Bash scripts that fully automate the setup process for enrolling
 
 **After reboot:** Sign into Edge with your domain account first, then open the Intune Portal app to complete enrollment.
 
-🔗 [View Script](https://github.com/NeptuneCipher42/Linux-Intune-Enrollment-Scripts/blob/main/RedHat-Physical-Desktop-Enrollment.sh)
+🔗 [View Script](https://github.com/NeptuneCipher42/Linux-Intune-Enrollment-Scripts/blob/main/RedHat-LTS-Physical-Desktop-Enrollment.sh)
 
 </details>
 
